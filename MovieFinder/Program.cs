@@ -3,6 +3,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient("OMDb", httpClient =>
+{
+    httpClient.BaseAddress = new Uri("http://www.omdbapi.com/?apikey=9a5ade55&");
+    httpClient.DefaultRequestHeaders.Add("Accept", "application/json; charset=utf-8");
+    httpClient.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-Sample");
+});
 
 var app = builder.Build();
 
