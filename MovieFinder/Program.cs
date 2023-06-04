@@ -1,3 +1,6 @@
+using MovieFinder.Services;
+using MovieFinder.Services.Abstractions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,6 +12,7 @@ builder.Services.AddHttpClient("OMDb", httpClient =>
     httpClient.DefaultRequestHeaders.Add("Accept", "application/json; charset=utf-8");
     httpClient.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-Sample");
 });
+builder.Services.AddScoped<IMovieService, MovieService>();
 
 var app = builder.Build();
 
@@ -26,7 +30,7 @@ app.UseRouting();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
+    pattern: "{controller}/{action=Index}/{id?}/{page?}");
 
 app.MapFallbackToFile("index.html");
 
