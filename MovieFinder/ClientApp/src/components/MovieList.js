@@ -51,7 +51,7 @@ export class MovieList extends Component {
     render() {
         return (
             <div>
-                {this.state.movies.length > 0 ? (
+                {
                 this.state.movies.map((item, i) => (
                     <div className="row" key={i}>
                         <div className="col-md-1">
@@ -68,9 +68,7 @@ export class MovieList extends Component {
                         </div>
                     </div>
                 ))
-            ) : (
-                <p>No movies were found.</p>
-            )}
+            }
             </div>);
     }
 }
