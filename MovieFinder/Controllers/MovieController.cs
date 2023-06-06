@@ -18,15 +18,15 @@ public class MovieController : ControllerBase
         _movieService = movieService;
     }
     
-    [HttpGet("{id?}/{page:int?}")]
-    public async Task<ActionResult> OnGet(string id, int page)
+    [HttpGet("search")]
+    public async Task<ActionResult> SearchMoviesByTitle(string id, int page, int year)
     {
-        var searchMovieByTitle = await _movieService.SearchMovieByTitle(id, page);
+        var searchMovieByTitle = await _movieService.SearchMovieByTitle(id, page, year);
         return Ok(searchMovieByTitle);
     }
     
-    [HttpGet("{id?}")]
-    public async Task<ActionResult> OnGet(string id)
+    [HttpGet("{id}")]
+    public async Task<ActionResult> GetMovieById(string id)
     {
         var httpClient = _httpClientFactory.CreateClient("OMDb");
         var httpResponseMessage = await httpClient.GetAsync(httpClient.BaseAddress + "i=" + id);
@@ -38,6 +38,4 @@ public class MovieController : ControllerBase
 
         return Ok(movie);
     }
-    
-    
 }

@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using MovieFinder.Payload.Response;
 using MovieFinder.Services.Abstractions;
 using MovieFinder.Services.Response;
@@ -15,11 +16,16 @@ public class MovieService : IMovieService
         _httpClientFactory = httpClientFactory;
     }
     
-    public async Task<ServiceResponse<MovieSearch>> SearchMovieByTitle(string title, int page = 1)
+    public async Task<ServiceResponse<MovieSearch>> SearchMovieByTitle(string title, int page = 1, int year = -1)
     {
         var s = title.Replace(' ', '+');
         var httpClient = _httpClientFactory.CreateClient("OMDb");
-        var httpResponseMessage = await httpClient.GetAsync(httpClient.BaseAddress + "s=" + s + "&page=" + page);
+        var httpClientBaseAddress = httpClient.BaseAddress + "type=movie&s=" + s + "&page=" + page;
+
+        if (year > 0)
+            httpClientBaseAddress += "&y=" + year;
+        
+        var httpResponseMessage = await httpClient.GetAsync(httpClientBaseAddress);
 
         httpResponseMessage.EnsureSuccessStatusCode();
         using var contentStream = httpResponseMessage.Content.ReadAsStreamAsync();

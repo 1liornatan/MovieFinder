@@ -5,5 +5,5 @@ namespace MovieFinder.Services.Abstractions;
 
 public interface IMovieService
 {
-    Task<ServiceResponse<MovieSearch>> SearchMovieByTitle(string title, int page);
+    Task<ServiceResponse<MovieSearch>> SearchMovieByTitle(string title, int page, int year);
 }
