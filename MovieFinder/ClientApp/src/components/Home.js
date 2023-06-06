@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import SearchBar from "./SearchBar";
 import {MovieList} from "./MovieList";
 import {Paginator} from "./Paginator";
+import {FilterBar} from "./FilterBar";
+
 export class Home extends Component {
     static displayName = Home.name;
 
@@ -24,6 +26,8 @@ export class Home extends Component {
             movies: Home.popularMovies,
             results: Home.popularMovies.length,
             popular: true,
+            year: -1,
+            isFiltering: false
         };
     }
 
@@ -48,7 +52,10 @@ export class Home extends Component {
 
     requestMovies = async (title, page) => {
         console.log(title, page);
-        const response = await fetch(`movie/${title}/${page}`);
+        let url = `movie/search?id=${title}&page=${page}`;
+        if(this.state.year > 0) url = url + `&year=${this.state.year}`
+        
+        const response = await fetch(url);
         const data = await response.json();
 
         const movies = data?.data?.search || [];
@@ -59,25 +66,47 @@ export class Home extends Component {
         this.setState({ movies: movies, results: results, popular: false });
     };
     
+    onFilteredSearchSubmit = async (year) => {
+        if(this.state.popular)
+            return; // cannot filter at popular movies
+        
+        let filter = false;
+        
+        if(year > 0)
+            filter = true;
+        
+        await this.setState( { year: year, isFiltering: filter })
+        await this.onTermSubmit(this.state.title, year)
+    }
     render() {
         return (
             <div>
                 <h1>Welcome To Movie Finder!</h1>
                 <SearchBar onFormSubmit={this.onTermSubmit} />
+                <FilterBar onFilterSubmit={this.onFilteredSearchSubmit}/>
                 <br />
+                Status:
+                {
+                    this.state.isFiltering ?
+                        (<p>Filtering by Year [{this.state.year}]</p>)
+                        :
+                        (<p>Not Filtering</p>)
+                }
+                <br/>
                 {this.state.popular ? (
                     <p>Popular Movies:</p>
                 ) : (
                     <div>
                         <p>Search Results:</p>
-                        <Paginator
-                            results={this.state.results}
-                            requestMovies={this.requestMovies}
-                            title={this.state.title}
-                        />
                     </div>
                 )}
                 <MovieList movies={this.state.movies} results={this.state.results} />
+                <br/>
+                <Paginator
+                    results={this.state.results}
+                    requestMovies={this.requestMovies}
+                    title={this.state.title}
+                />
             </div>
         );
     }

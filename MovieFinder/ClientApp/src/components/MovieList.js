@@ -1,5 +1,5 @@
 ﻿import React, {Component} from "react";
-
+import "./MovieList.css"
 
 export class MovieList extends Component {
     static displayName = MovieList.name;
@@ -9,7 +9,8 @@ export class MovieList extends Component {
         this.state = {
             movies: props.movies,
             results: props.results,
-            isLoading: false
+            isLoading: false,
+            expandedMovie: null
         }
     }
 
@@ -47,28 +48,41 @@ export class MovieList extends Component {
             this.setState({ isLoading: false })
         }
     };
-    
+
+    handleMovieClick = (movie) => {
+        this.setState((prevState) => ({
+            expandedMovie: prevState.expandedMovie === movie ? null : movie
+        }));
+    };
     render() {
         return (
             <div>
                 {
-                this.state.movies.map((item, i) => (
-                    <div className="row" key={i}>
-                        <div className="col-md-1">
-                            <img src={item.poster} alt={item.title} className="img-fluid" />
+                    this.state.results > 0 ? this.state.movies.map((item, i) => (
+                    <div key={i} className={`movie-container ${this.state.expandedMovie === item ? 'expanded' : ''}`}>
+                        <div
+                            className={`row movie-row ${this.state.expandedMovie === item ? 'expanded' : ''}`}
+                            onClick={() => this.handleMovieClick(item)}
+                        >
+                            <div className="col-md-1">
+                                <img src={item.poster} alt={item.title} className="img-fluid" />
+                            </div>
+                            <div className="col-md-3">{item.title}</div>
+                            <div className="col-md-6">{item.plot}</div>
+                            <div className="col-md-2">{item.imdbRating}</div>
                         </div>
-                        <div className="col-md-3">
-                            {item.title}
-                        </div>
-                        <div className="col-md-6">
-                            {item.plot}
-                        </div>
-                        <div className={"col-md-2"}>
-                            RATING
-                        </div>
+                        {this.state.expandedMovie === item && (
+                            <div className="row movie-details">
+                                <div className="col-md-3">Actors: {item.actors}</div>
+                                <div className="col-md-3">Genre: {item.genre}</div>
+                                <div className="col-md-3">Released at: {item.released}</div>
+                                <div className="col-md-3">Director: {item.director}</div>
+                            </div>
+                        )}
                     </div>
-                ))
-            }
-            </div>);
+                        )) : (<p>No movies were found!</p>)
+                }
+            </div>
+        );
     }
 }
