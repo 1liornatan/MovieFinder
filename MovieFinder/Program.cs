@@ -1,5 +1,5 @@
-using MovieFinder.Services;
-using MovieFinder.Services.Abstractions;
+using MovieFinder.Server.Services;
+using MovieFinder.Server.Services.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 

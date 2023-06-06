@@ -1,6 +1,6 @@
 ﻿import {Component} from "react";
-import {Button} from "reactstrap";
 import "./FilterBar.css"
+
 export class FilterBar extends Component {
     constructor(props) {
         super(props);

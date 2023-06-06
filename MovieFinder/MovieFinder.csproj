@@ -26,7 +26,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Payload\Request\" />
+      <Folder Include="Server\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Server\Pages\Error.cshtml" />
+      <AdditionalFiles Include="Server\Pages\_ViewImports.cshtml" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
