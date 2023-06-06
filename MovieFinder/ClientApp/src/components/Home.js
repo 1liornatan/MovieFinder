@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import SearchBar from "./SearchBar";
-import {MovieList} from "./MovieList";
-import {Paginator} from "./Paginator";
-import {FilterBar} from "./FilterBar";
+import SearchBar from "./SearchBar/SearchBar";
+import {FilterBar} from "./FilterBar/FilterBar";
+import {MovieList} from "./MovieList/MovieList";
+import {Paginator} from "./Paginator/Paginator";
 
+/*
+    This is the main page for the app,
+    it creates all the components required for the Movie Finder app
+*/
 export class Home extends Component {
     static displayName = Home.name;
 

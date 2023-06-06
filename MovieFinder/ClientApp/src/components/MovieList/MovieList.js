@@ -1,6 +1,10 @@
 ﻿import React, {Component} from "react";
 import "./MovieList.css"
 
+/*
+    This component creates the movie list and displays
+    all the information about the movie.
+*/
 export class MovieList extends Component {
     static displayName = MovieList.name;
     
